@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/kylec/Downloads/AirlineDB(2).sqlite" foreign_keys="1"/><window><current_tab id="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="125"/><column_width id="3" width="1481"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="Aircraft"/><default_encoding codec=""/><browsetable_info data="AAAAAA=="/></tab_browse><tab_sql><sql name="SQL 1">--Find the name of the pilots who are certified to fly aid=4. The query result should also include the 
+--manufacturer and model of aircraft with aid=4.
+SELECT fname || ' ' || lname AS 'Pilot Name', Cer.aid AS &quot;Airplane ID&quot;, mname AS 'Manufacturer Name', model AS 'Model'
+FROM Employee Emp JOIN Certificate Cer JOIN Aircraft Air ON Emp.eid = Cer.eid AND Cer.aid = Air.aid
+WHERE Cer.aid = 4;
+</sql><sql name="SQL 2">--Find the pilots who are certified to fly aircraft manufactured by ‘Airbus’ or ‘Boeing’. We are looking pilots whose 
+--last name does NOT start with W.
+--Your query result should show the name of the pilot, manufacturer, model, and crusingrange of the aircraft.
+SELECT fname||' '||lname AS 'Pilot Name', mname AS 'Manufacturer', model, crusingrange AS 'Cruising Range'
+FROM Employee Emp JOIN Certificate Cer JOIN Aircraft Air ON Emp.eid = Cer.eid AND Air.aid = Cer.aid
+WHERE (mname = 'Airbus' OR mname = 'Boeing') AND lname NOT LIKE 'w%';</sql><current_tab id="1"/></tab_sql></sqlb_project>

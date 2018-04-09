@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/kylec/Downloads/EmployeeDB(1).sqlite" foreign_keys="1"/><window><current_tab id="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="125"/><column_width id="3" width="1997"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="Department"/><default_encoding codec=""/><browsetable_info data="AAAAAQAAABQARABlAHAAYQByAHQAbQBlAG4AdAAAAAAAAAAAAAAAAAAAAAAAAAAAAP//////////AAAAAP////8="/></tab_browse><tab_sql><sql name="ex2_q1.sql">SELECT *
+FROM Employee
+WHERE age &gt; (20*2)</sql><sql name="ex2_q2.sql">SELECT *
+FROM Employee
+WHERE EmpName LIKE '%son'</sql><sql name="ex2_q3.sql">SELECT *
+FROM Employee
+WHERE age is null</sql><sql name="ex2_q4.sql">SELECT Man.EmpID | ' '| Emp.EmpName AS 'Manager ID and Name', DeptName AS 'Name of Department', Budget
+FROM Employee Emp JOIN Manager Man JOIN Department Dep ON Emp.EmpID = Man.EmpID AND Man.DeptID = Dep.DeptID
+WHERE Budget &gt; 750000
+ORDER BY Budget DESC</sql><current_tab id="3"/></tab_sql></sqlb_project>

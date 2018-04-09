@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/kylec/Downloads/LibraryDB.sqlite" foreign_keys="1"/><window><current_tab id="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="125"/><column_width id="3" width="2695"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="Customer"/><default_encoding codec=""/><browsetable_info data="AAAAAwAAAAgASQB0AGUAbQAAAAAAAAAAAAAAAAAAAAAAAAAAAP//////////AAAAAP////8AAAAaAEkAbgB2AGUAbgB0AG8AcgB5AEkAdABlAG0AAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAD/////AAAAEABDAHUAcwB0AG8AbQBlAHIAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAD/////"/></tab_browse><tab_sql><sql name="Assignment1_Q1.sql">--Question 1
+SELECT Title, PubYear
+FROM Item
+WHERE PubYear IN (2011,2012,2014,2016)
+ORDER BY PubYear DESC, Title ASC</sql><sql name="Assignment1_Q2.sql">--Question 2
+SELECT Title, MediaID
+FROM Item
+WHERE Title LIKE 'iPhone%project%'</sql><sql name="Assignment1_Q3.sql">--Question 3
+SELECT InventoryItemID, Title, Status, Condition
+FROM InventoryItem Inv JOIN Item Itm
+ON Inv.ItemID = Itm.ItemID
+WHERE Condition = &quot;Poor&quot;
+ORDER BY Inv.ItemID ASC</sql><sql name="Assignment1_Q4.sql">--Question 4
+SELECT Title AS &quot;Title of Item&quot;, PubYear AS &quot;Year of Publication&quot;, Round(ReplacementCost,2) AS &quot;ReplacementCost&quot;, Round(ReplacementCost*1.1,2) AS &quot;ReplacementCost(NEW)&quot;
+FROM Item
+WHERE PubYear = 2010 OR PubYear = 2014
+ORDER BY PubYear DESC</sql><sql name="Assignment1_Q5.sql">--Question 5
+SELECT FirstName || &quot; &quot; || LastName AS &quot;Full Name&quot;, Gender, MemberStatus, MemberSince AS &quot;Member Since&quot;, Major
+FROM Customer
+WHERE FirstName LIKE '% %' OR FirstName LIKE '%-%'</sql><sql name="Assignment1_Q6.sql">--Question 6
+SELECT DISTINCT Author
+FROM Item
+WHERE Author NOT LIKE 'a%,%' AND Author NOT LIKE '%a%,%' AND Author NOT LIKE '%a,%'</sql><sql name="Assignment1_Q7.sql">--Question 7
+SELECT ItemID, Title
+FROM Item
+WHERE Description IS NULL</sql><sql name="Assignment1_Q8.sql">--Question 8
+SELECT COUNT (*) AS &quot;Total Rows of Records&quot;
+FROM Customer
+</sql><current_tab id="7"/></tab_sql></sqlb_project>
