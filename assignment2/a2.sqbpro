@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="H:/info151/LibraryDB.sqlite"/><window><current_tab id="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="505"/><expanded_item id="0" parent="-1"/><expanded_item id="1" parent="-1"/><expanded_item id="2" parent="-1"/><expanded_item id="3" parent="-1"/></tab_structure><tab_browse><current_table name="Loan"/><default_encoding codec=""/><browsetable_info data="AAAABgAAAB4AcwBxAGwAaQB0AGUAXwBzAGUAcQB1AGUAbgBjAGVQhJiQAAACTAAAAAAAAAAAAAAAAAD/////AAAACgBNAGUAZABpAGFMRpIQAAACTAAAAAAAAAAAAAAAAAD/////AAAACABMAG8AYQBuTsqpEAAAAkwAAAABAAAABQAAAM8AAAAAAAAAAAD/////AAAACABJAHQAZQBtTqzrkAAAAkwAAAAAAAAAAAAAAAAA/////wAAABoASQBuAHYAZQBuAHQAbwByAHkASQB0AGUAbU7Ks2AAAAJMAAAAAAAAAAAAAAAAAP////8AAAAQAEMAdQBzAHQAbwBtAGUAck6ou4AAAAJMAAAAAAAAAAAAAAAAAP////8="/></tab_browse><tab_sql><sql name="Assignment2_Q1.sql">--Question 1
+/*
+Produce a table showing the total books that are currently “CheckedOut” 
+by every major. Show the Major and “Total Books Checkedout” in the
+query result and sort the “Total Books Checkedout” in descending order. 
+Use only the MediaCode in the Where condition.
+*/
+SELECT Major, count(status) as 'Total Books Checkedout'
+FROM 
+WHERE MediaCode
+
+ORDER BY count(status) DESC</sql><sql name="Assignment2_Q2.sql">--Question 2
+/*
+Produce a table showing the total books published by each author between 
+2000 and 2015. Show only the rows if the total published books is greater 
+or equal 3. Sort the authors in ascending order. Assuming you do not 
+know the MediaID but you know the MediaCode.
+*/
+SELECT Author, count(PubYear) as 'Total books published by each author between 2000 and 2015'
+</sql><sql name="Assignment2_Q3.sql">--Question 3
+/* 
+Find the customers who have an item due on the 8th August 2015 and 
+has not “checkedin” in the loan table. Sort the Full Name in ascending order. 
+Show only the date without the time. Do not use strftime() in this question.
+*/
+SELECT FirstName || ' ' || LastName AS 'Fullname', DueDate AS  'Due Date'
+FROM Customer Cus JOIN Loan Lon ON Cus.CustomerID = Lon.CustomerID
+WHERE DueDate LIKE '2015-08-08%'
+ORDER BY FirstName || ' ' || LastName ASC</sql><current_tab id="2"/></tab_sql></sqlb_project>
