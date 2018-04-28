@@ -11,3 +11,5 @@ Where conditions
 (b) Use 5(a) as a subquery, find all INFO students who did not make any loan. Include both their Full
 Name, CustomerID, and Major in your results. 
 */
+SELECT CustomerID, LastName || ', ' || FirstName AS 'Full Name', Major
+FROM 

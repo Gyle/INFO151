@@ -1,29 +1,98 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="H:/info151/LibraryDB.sqlite"/><window><current_tab id="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="505"/><expanded_item id="0" parent="-1"/><expanded_item id="1" parent="-1"/><expanded_item id="2" parent="-1"/><expanded_item id="3" parent="-1"/></tab_structure><tab_browse><current_table name="Loan"/><default_encoding codec=""/><browsetable_info data="AAAABgAAAB4AcwBxAGwAaQB0AGUAXwBzAGUAcQB1AGUAbgBjAGVQhJiQAAACTAAAAAAAAAAAAAAAAAD/////AAAACgBNAGUAZABpAGFMRpIQAAACTAAAAAAAAAAAAAAAAAD/////AAAACABMAG8AYQBuTsqpEAAAAkwAAAABAAAABQAAAM8AAAAAAAAAAAD/////AAAACABJAHQAZQBtTqzrkAAAAkwAAAAAAAAAAAAAAAAA/////wAAABoASQBuAHYAZQBuAHQAbwByAHkASQB0AGUAbU7Ks2AAAAJMAAAAAAAAAAAAAAAAAP////8AAAAQAEMAdQBzAHQAbwBtAGUAck6ou4AAAAJMAAAAAAAAAAAAAAAAAP////8="/></tab_browse><tab_sql><sql name="Assignment2_Q1.sql">--Question 1
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/kylec/Downloads/LibraryDB.sqlite" foreign_keys="1"/><window><current_tab id="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2695"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="Customer"/><default_encoding codec=""/><browsetable_info data="AAAABQAAAAoATQBlAGQAaQBhAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////wAAAAgATABvAGEAbgAAAAAAAAAAAAAAAAAAAAAAAAAAAP//////////AAAAAP////8AAAAIAEkAdABlAG0AAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAD/////AAAAGgBJAG4AdgBlAG4AdABvAHIAeQBJAHQAZQBtAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////wAAABAAQwB1AHMAdABvAG0AZQByAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////w=="/></tab_browse><tab_sql><sql name="Assignment2_Q1.sql">--Question 1
+/*
+Produce a table showing the total books that are currently “CheckedOut” 
+by every major. Show the Major and “Total Books Checkedout” in the
+query result and sort the “Total Books Checkedout” in descending order. 
+Use only the MediaCode in the Where condition.
+*/
+SELECT Major, count(status) as 'Total Books Checkedout'
+FROM 
+WHERE MediaCode
+
+ORDER BY count(status) DESC</sql><sql name="Assignment2_Q2.sql">--Question 2
+/*
+Produce a table showing the total books published by each author between 
+2000 and 2015. Show only the rows if the total published books is greater 
+or equal 3. Sort the authors in ascending order. Assuming you do not 
+know the MediaID but you know the MediaCode.
+*/
+SELECT Author, count(PubYear) as 'Total books published by each author between 2000 and 2015'
+</sql><sql name="Assignment2_Q3.sql">--Question 3
+/* 
+Find the customers who have an item due on the 8th August 2015 and 
+has not “checkedin” in the loan table. Sort the Full Name in ascending order. 
+Show only the date without the time. Do not use strftime() in this question.
+*/
+SELECT FirstName || ' ' || LastName AS 'Full Name', DATE(DueDate) AS  'Due Date'
+FROM Customer Cus JOIN Loan Lon ON Cus.CustomerID = Lon.CustomerID
+WHERE DueDate LIKE '2015-08-08%'
+ORDER BY FirstName || ' ' || LastName ASC</sql><sql name="Assignment2_Q4.sql">--Question 4
 /*
-Produce a table showing the total books that are currently “CheckedOut” 
-by every major. Show the Major and “Total Books Checkedout” in the
-query result and sort the “Total Books Checkedout” in descending order. 
-Use only the MediaCode in the Where condition.
+The library would like to know the number of times a customer has an overdue fee and their total
+overdue fee. Sort the output by the ‘Number of times overdue’ in descending order then by the ‘Total
+overdue fee’ in descending order. Show only the total overdue fee greater or equal to $5 but less than
+$100.
 */
-SELECT Major, count(status) as 'Total Books Checkedout'
-FROM 
-WHERE MediaCode
+SELECT loa.CustomerID, FirstName || ' ' || LastName AS 'Full Name', COUNT(OverdueFee) AS &quot;Number of times overdue&quot;, SUM(OverdueFee) AS &quot;Total overdue fee&quot;
+FROM CUSTOMER cus JOIN LOAN loa ON cus.CustomerID = loa.CustomerID
+WHERE OverdueFee is not NULL and OverdueFee &gt;= 5 and OverdueFee &lt; 100
+GROUP BY loa.CustomerID
+ORDER BY COUNT(OverdueFee) DESC, SUM(OverdueFee) DESC</sql><sql name="Assignment2_Q5.sql">--Question 5
+/*
+ (a) Find all the unique customer full name with at least one loan.
+*Important*
+(1) Use the join syntax below for questions that require an inner join. Other syntax will not
+be accepted.
+SELECT column-list
+FROM table 1 JOIN table 2 ON joint-condition
+Where conditions
+(2) Use “=” sign, for example “percent_time =100” not “percent_time IS 100”.
+(b) Use 5(a) as a subquery, find all INFO students who did not make any loan. Include both their Full
+Name, CustomerID, and Major in your results. 
+*/
+SELECT CustomerID, LastName || ', ' || FirstName AS 'Full Name', Major
+FROM </sql><sql name="Assignment2_Q6.sql">--Question 6
+/*
+(a) Find the total overdue fee for the customer &quot;Barclay, Fletcher&quot; without using ID in the query.
+(b) How many distinct students (exclude &quot;Barclay, Fletcher&quot;) with a single overdue fee greater than
+half the total overdue fee of &quot;Barclay, Fletcher&quot;? You must use 6(a) as a subquery. You must use
+the “NOT” SQL in this question.
+*/
 
-ORDER BY count(status) DESC</sql><sql name="Assignment2_Q2.sql">--Question 2
+SELECT DISTINCT LastName || ', ' || FirstName AS 'Full Name'
+FROM Customer NATURAL JOIN Loan
+WHERE COUNT(OverdueFee) = 1 AND OverdueFee &gt;= (SELECT SUM(OverdueFee)
+											   FROM Customer NATURAL JOIN Loan
+											   WHERE LastName = &quot;Barclay&quot; AND FirstName = &quot;Fletcher&quot;) / 2</sql><sql name="Assignment2_Q7.sql">--Question 7
 /*
-Produce a table showing the total books published by each author between 
-2000 and 2015. Show only the rows if the total published books is greater 
-or equal 3. Sort the authors in ascending order. Assuming you do not 
-know the MediaID but you know the MediaCode.
-*/
-SELECT Author, count(PubYear) as 'Total books published by each author between 2000 and 2015'
-</sql><sql name="Assignment2_Q3.sql">--Question 3
-/* 
-Find the customers who have an item due on the 8th August 2015 and 
-has not “checkedin” in the loan table. Sort the Full Name in ascending order. 
-Show only the date without the time. Do not use strftime() in this question.
-*/
-SELECT FirstName || ' ' || LastName AS 'Fullname', DueDate AS  'Due Date'
-FROM Customer Cus JOIN Loan Lon ON Cus.CustomerID = Lon.CustomerID
-WHERE DueDate LIKE '2015-08-08%'
-ORDER BY FirstName || ' ' || LastName ASC</sql><current_tab id="2"/></tab_sql></sqlb_project>
+The manager is interested to know yearly borrowing volume by Gender. Present a table displaying the
+Gender, Year, Month and The Number of Loans. Sort the results in descending order by Gender,
+ascending order by Year and ascending order by Month. Show only the rows if the number of loans is
+less than 25.
+Hint: (1) Use CheckedOut date to extract the year and month when the book is loaned; (2) Use
+strftime() function to deal with the year and month.
+*/</sql><sql name="Assignment2_Q8.sql">--Question 8
+/*
+(a) Find the total number of loan for each customerID.
+(b) Show the total number of loan for each customer include customers who have no loan. You must
+use 8(a) as sub-query to form the right part of the outer join table. Show the result according to the
+format below
+*/</sql><sql name="Assignment2_Q9.sql">--Question 9
+/*
+Show the number of books published each year by each author. Show only the rows for author who
+published more than 1 book in a year. The table should show author, Pubyear, and “Total Book
+Published in Year”. MediaID should not be used in this query, use MediaCode.
+*/</sql><sql name="Assignment2_Q10.sql">--Question 10
+/*
+Use only a left outer join to find the customers who did not make any loan. Show the CustomerID, Full
+Name, and Major. Show only the rows contain “INFO” major only.
+*/</sql><sql name="Assignment2_Q11.sql">--Question 11
+/*
+How many students with a total overdue fee greater than half the total overdue fee of &quot;Barclay,
+Fletcher&quot; (exclude &quot;Barclay, Fletcher&quot;)?
+*/</sql><sql name="Assignment2_Q12.sql">--Question 12
+/*
+Use the SQL date modifier expression in chapter 44 of the Sqlite tutorial to add 3 days, 8 hours, 3
+minutes, and 45 seconds to the date “2018-05-11 23:59:59”. This question does not require a
+database.
+*/</sql><current_tab id="5"/></tab_sql></sqlb_project>

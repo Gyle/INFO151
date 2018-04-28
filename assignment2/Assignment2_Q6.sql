@@ -5,3 +5,9 @@
 half the total overdue fee of "Barclay, Fletcher"? You must use 6(a) as a subquery. You must use
 the “NOT” SQL in this question.
 */
+
+SELECT DISTINCT LastName || ', ' || FirstName AS 'Full Name'
+FROM Customer NATURAL JOIN Loan
+WHERE COUNT(OverdueFee) = 1 AND OverdueFee >= (SELECT SUM(OverdueFee)
+											   FROM Customer NATURAL JOIN Loan
+											   WHERE LastName = "Barclay" AND FirstName = "Fletcher") / 2
