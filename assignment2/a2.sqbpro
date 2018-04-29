@@ -1,22 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/kylec/Downloads/LibraryDB.sqlite" foreign_keys="1"/><window><current_tab id="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2695"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="Loan"/><default_encoding codec=""/><browsetable_info data="AAAABQAAAAoATQBlAGQAaQBhAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////wAAAAgATABvAGEAbgAAAAIAAAAAAAAAAAAAAAAAAAAAAP//////////AAAAAP////8AAAAIAEkAdABlAG0AAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAD/////AAAAGgBJAG4AdgBlAG4AdABvAHIAeQBJAHQAZQBtAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////wAAABAAQwB1AHMAdABvAG0AZQByAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////w=="/></tab_browse><tab_sql><sql name="Assignment2_Q1.sql">--Question 1
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/kylec/Downloads/LibraryDB.sqlite" foreign_keys="1"/><window><current_tab id="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2695"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="Media"/><default_encoding codec=""/><browsetable_info data="AAAABQAAAAoATQBlAGQAaQBhAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////wAAAAgATABvAGEAbgAAAAIAAAABAAAAAAAAAAAAAAAAAP//////////AAAAAP////8AAAAIAEkAdABlAG0AAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAD/////AAAAGgBJAG4AdgBlAG4AdABvAHIAeQBJAHQAZQBtAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////wAAABAAQwB1AHMAdABvAG0AZQByAAAAAgAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////w=="/></tab_browse><tab_sql><sql name="Assignment2_Q1.sql">--Question 1
 /*
 Produce a table showing the total books that are currently “CheckedOut” 
 by every major. Show the Major and “Total Books Checkedout” in the
 query result and sort the “Total Books Checkedout” in descending order. 
 Use only the MediaCode in the Where condition.
 */
-SELECT Major, count(status) as 'Total Books Checkedout'
-FROM 
-WHERE MediaCode
-
-ORDER BY count(status) DESC</sql><sql name="Assignment2_Q2.sql">--Question 2
+SELECT c.Major, COUNT(status) as 'Total Books Checkedout'
+FROM Media m JOIN Item i JOIN InventoryItem inven JOIN Loan l JOIN Customer c -- had no other way of linking all tables without using mediaID
+	ON  m.MediaID = i.MediaID AND i.ItemID = inven.ItemID AND inven.InventoryItemID = l.InventoryItemID AND l.CustomerID = c.CustomerID
+WHERE MediaCode = &quot;HDBK&quot; OR MediaCode = &quot;PAPER&quot; --These two mediacodes are books in the database
+GROUP BY Major
+ORDER BY COUNT(status) DESC</sql><sql name="Assignment2_Q2.sql">--Question 2
 /*
 Produce a table showing the total books published by each author between 
 2000 and 2015. Show only the rows if the total published books is greater 
 or equal 3. Sort the authors in ascending order. Assuming you do not 
 know the MediaID but you know the MediaCode.
 */
-SELECT Author, count(PubYear) as 'Total books published by each author between 2000 and 2015'
+SELECT Author, COUNT(PubYear) AS 'Total Books Published'
+FROM Item NATURAL JOIN Media	-- says dont use mediaID? so im using natural join but is it allowed?
+WHERE PubYear &gt;= 2000 AND PubYear &lt;= 2015 AND MediaCode = &quot;HDBK&quot; OR MediaCode = &quot;PAPER&quot; --These two mediacodes are books in the database
+GROUP BY Author
+HAVING COUNT(PubYear) &gt;= 3
+ORDER BY Author ASC
 </sql><sql name="Assignment2_Q3.sql">--Question 3
 /* 
 Find the customers who have an item due on the 8th August 2015 and 
@@ -52,8 +58,8 @@ Name, CustomerID, and Major in your results.
 */
 SELECT CustomerID, LastName || ', ' || FirstName AS 'Full Name', Major
 FROM Customer
-WHERE Major = 'INFO' AND LastName NOT IN(SELECT DISTINCT c.LastName
-										 FROM Customer c JOIN Loan l on c.CustomerID = l.CustomerID)</sql><sql name="Assignment2_Q6.sql">--Question 6
+WHERE Major = 'INFO' AND LastName || ', ' || FirstName NOT IN(SELECT DISTINCT c.LastName || ', ' || c.FirstName
+															  FROM Customer c JOIN Loan l on c.CustomerID = l.CustomerID)</sql><sql name="Assignment2_Q6.sql">--Question 6
 /*
 (a) Find the total overdue fee for the customer &quot;Barclay, Fletcher&quot; without using ID in the query.
 (b) How many distinct students (exclude &quot;Barclay, Fletcher&quot;) with a single overdue fee greater than
@@ -91,9 +97,7 @@ format below
 SELECT c.CustomerID, LastName, FirstName, T.TotalloanAll AS &quot;Totalloan&quot;
 FROM Customer c LEFT OUTER JOIN (SELECT *, COUNT(OverdueFee) AS &quot;TotalloanAll&quot;
 								 FROM Loan
-								 GROUP BY CustomerID) T ON c.CustomerID = T.CustomerID
-
-</sql><sql name="Assignment2_Q9.sql">--Question 9
+								 GROUP BY CustomerID) T ON c.CustomerID = T.CustomerID</sql><sql name="Assignment2_Q9.sql">--Question 9
 /*
 Show the number of books published each year by each author. Show only the rows for author who
 published more than 1 book in a year. The table should show author, Pubyear, and “Total Book
@@ -131,4 +135,4 @@ Use the SQL date modifier expression in chapter 44 of the Sqlite tutorial to add
 minutes, and 45 seconds to the date “2018-05-11 23:59:59”. This question does not require a
 database.
 */
-SELECT datetime('2018-05-11 23:59:59') AS &quot;Original Date&quot;, datetime('2018-05-11 23:59:59', '3 days', '8 hours', '3 minutes', '45 seconds') AS &quot;Modified Date&quot;</sql><current_tab id="4"/></tab_sql></sqlb_project>
+SELECT datetime('2018-05-11 23:59:59') AS &quot;Original Date&quot;, datetime('2018-05-11 23:59:59', '3 days', '8 hours', '3 minutes', '45 seconds') AS &quot;Modified Date&quot;</sql><current_tab id="7"/></tab_sql></sqlb_project>

@@ -9,4 +9,3 @@ SELECT c.CustomerID, LastName, FirstName, T.TotalloanAll AS "Totalloan"
 FROM Customer c LEFT OUTER JOIN (SELECT *, COUNT(OverdueFee) AS "TotalloanAll"
 								 FROM Loan
 								 GROUP BY CustomerID) T ON c.CustomerID = T.CustomerID
-

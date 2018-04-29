@@ -5,4 +5,9 @@ Produce a table showing the total books published by each author between
 or equal 3. Sort the authors in ascending order. Assuming you do not 
 know the MediaID but you know the MediaCode.
 */
-SELECT Author, count(PubYear) as 'Total books published by each author between 2000 and 2015'
+SELECT Author, COUNT(PubYear) AS 'Total Books Published'
+FROM Item NATURAL JOIN Media	-- says dont use mediaID? so im using natural join but is it allowed?
+WHERE PubYear >= 2000 AND PubYear <= 2015 AND MediaCode = "HDBK" OR MediaCode = "PAPER" --These two mediacodes are books in the database
+GROUP BY Author
+HAVING COUNT(PubYear) >= 3
+ORDER BY Author ASC
