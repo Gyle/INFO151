@@ -7,7 +7,7 @@ the “NOT” SQL in this question.
 */
 
 SELECT DISTINCT LastName || ', ' || FirstName AS 'Full Name', COUNT(OverdueFee) AS "Number of Overdue Fees", SUM(OverdueFee) AS "Overdue Fee"
-FROM Customer NATURAL JOIN Loan
+FROM Customer NATURAL JOIN Loan  --How do you inner join without ID?? But natural join isnt accepted??
 WHERE NOT LastName = "Barclay"
 GROUP BY LastName
 HAVING COUNT(OverdueFee) = 1 AND SUM (OverdueFee) > (SELECT SUM(OverdueFee)

@@ -25,7 +25,7 @@ Show only the date without the time. Do not use strftime() in this question.
 */
 SELECT FirstName || ' ' || LastName AS 'Full Name', DATE(DueDate) AS  'Due Date'
 FROM Customer Cus JOIN Loan Lon ON Cus.CustomerID = Lon.CustomerID
-WHERE DueDate LIKE '2015-08-08%'
+WHERE Date(DueDate) = '2015-08-08'
 ORDER BY FirstName || ' ' || LastName ASC</sql><sql name="Assignment2_Q4.sql">--Question 4
 /*
 The library would like to know the number of times a customer has an overdue fee and their total
@@ -60,7 +60,7 @@ the “NOT” SQL in this question.
 */
 
 SELECT DISTINCT LastName || ', ' || FirstName AS 'Full Name', COUNT(OverdueFee) AS &quot;Number of Overdue Fees&quot;, SUM(OverdueFee) AS &quot;Overdue Fee&quot;
-FROM Customer NATURAL JOIN Loan
+FROM Customer NATURAL JOIN Loan  --How do you inner join without ID?? But natural join isnt accepted??
 WHERE NOT LastName = &quot;Barclay&quot;
 GROUP BY LastName
 HAVING COUNT(OverdueFee) = 1 AND SUM (OverdueFee) &gt; (SELECT SUM(OverdueFee)
@@ -108,7 +108,7 @@ ORDER BY PubYear DESC</sql><sql name="Assignment2_Q10.sql">--Question 10
 Use only a left outer join to find the customers who did not make any loan. Show the CustomerID, Full
 Name, and Major. Show only the rows contain “INFO” major only.
 */
-</sql><sql name="Assignment2_Q11.sql">--Question 11
+SELECT CustomerID, LastName || ', ' || FirstName AS 'Full Name', Major</sql><sql name="Assignment2_Q11.sql">--Question 11
 /*
 How many students with a total overdue fee greater than half the total overdue fee of &quot;Barclay,
 Fletcher&quot; (exclude &quot;Barclay, Fletcher&quot;)?
@@ -125,4 +125,4 @@ Use the SQL date modifier expression in chapter 44 of the Sqlite tutorial to add
 minutes, and 45 seconds to the date “2018-05-11 23:59:59”. This question does not require a
 database.
 */
-SELECT datetime('2018-05-11 23:59:59') AS &quot;Original Date&quot;, datetime('2018-05-11 23:59:59', '3 days', '8 hours', '3 minutes', '45 seconds') AS &quot;Modified Date&quot;</sql><current_tab id="9"/></tab_sql></sqlb_project>
+SELECT datetime('2018-05-11 23:59:59') AS &quot;Original Date&quot;, datetime('2018-05-11 23:59:59', '3 days', '8 hours', '3 minutes', '45 seconds') AS &quot;Modified Date&quot;</sql><current_tab id="5"/></tab_sql></sqlb_project>
