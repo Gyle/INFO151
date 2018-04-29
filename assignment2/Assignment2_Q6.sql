@@ -6,11 +6,11 @@ half the total overdue fee of "Barclay, Fletcher"? You must use 6(a) as a subque
 the “NOT” SQL in this question.
 */
 
-SELECT LastName || ', ' || FirstName AS 'Full Name', OverdueFee--, COUNT(OverdueFee) AS "Number of Overdue Fees", SUM(OverdueFee) AS "Overdue Fee"
+SELECT DISTINCT LastName || ', ' || FirstName AS 'Full Name', COUNT(OverdueFee) AS "Number of Overdue Fees", SUM(OverdueFee) AS "Overdue Fee"
 FROM Customer NATURAL JOIN Loan
-/*WHERE LastName IS NOT "Barclay" AND OverdueFee > (SELECT SUM(OverdueFee)
-												  FROM Customer NATURAL JOIN Loan
-												  WHERE LastName = "Barclay" AND FirstName = "Fletcher") / 2
+WHERE NOT LastName = "Barclay"
 GROUP BY LastName
-HAVING COUNT(OverdueFee) = 1  --Want Single Overdue Fee
---Kim, Soing. shouldnt be in the results but she is?*/
+HAVING COUNT(OverdueFee) = 1 AND SUM (OverdueFee) > (SELECT SUM(OverdueFee)
+													 FROM Customer NATURAL JOIN Loan
+												     WHERE LastName = "Barclay" AND FirstName = "Fletcher") / 2
+--Kim, Soing. shouldnt be in the results, right?
