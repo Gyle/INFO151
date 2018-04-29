@@ -71,7 +71,12 @@ ascending order by Year and ascending order by Month. Show only the rows if the 
 less than 25.
 Hint: (1) Use CheckedOut date to extract the year and month when the book is loaned; (2) Use
 strftime() function to deal with the year and month.
-*/</sql><sql name="Assignment2_Q8.sql">--Question 8
+*/
+SELECT Gender, strftime('%Y',CheckedOut) AS &quot;Year&quot;, strftime('%m',CheckedOut) AS &quot;Month&quot;, COUNT(CheckedOut) AS &quot;The Number of Loans&quot;
+FROM Customer c JOIN Loan l ON c.CustomerID = l.CustomerID
+GROUP BY strftime('%m',CheckedOut)
+HAVING COUNT(CheckedOut) &lt; 25
+ORDER BY Gender DESC, strftime('%Y',CheckedOut) ASC, strftime('%m',CheckedOut) ASC</sql><sql name="Assignment2_Q8.sql">--Question 8
 /*
 (a) Find the total number of loan for each customerID.
 (b) Show the total number of loan for each customer include customers who have no loan. You must
@@ -101,4 +106,4 @@ Fletcher&quot; (exclude &quot;Barclay, Fletcher&quot;)?
 Use the SQL date modifier expression in chapter 44 of the Sqlite tutorial to add 3 days, 8 hours, 3
 minutes, and 45 seconds to the date “2018-05-11 23:59:59”. This question does not require a
 database.
-*/</sql><current_tab id="5"/></tab_sql></sqlb_project>
+*/</sql><current_tab id="6"/></tab_sql></sqlb_project>
