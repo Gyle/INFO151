@@ -6,5 +6,5 @@ Show only the date without the time. Do not use strftime() in this question.
 */
 SELECT FirstName || ' ' || LastName AS 'Full Name', DATE(DueDate) AS  'Due Date'
 FROM Customer Cus JOIN Loan Lon ON Cus.CustomerID = Lon.CustomerID
-WHERE DueDate LIKE '2015-08-08%'
+WHERE Date(DueDate) = '2015-08-08'
 ORDER BY FirstName || ' ' || LastName ASC
