@@ -8,6 +8,6 @@ the “NOT” SQL in this question.
 
 SELECT DISTINCT LastName || ', ' || FirstName AS 'Full Name'
 FROM Customer NATURAL JOIN Loan
-WHERE COUNT(OverdueFee) = 1 AND OverdueFee >= (SELECT SUM(OverdueFee)
-											   FROM Customer NATURAL JOIN Loan
-											   WHERE LastName = "Barclay" AND FirstName = "Fletcher") / 2
+WHERE OverdueFee >= (SELECT SUM(OverdueFee)
+					 FROM Customer NATURAL JOIN Loan
+					 WHERE LastName = "Barclay" AND FirstName = "Fletcher") / 2
