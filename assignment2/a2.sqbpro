@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/kylec/Downloads/LibraryDB.sqlite" foreign_keys="1"/><window><current_tab id="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2695"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="Loan"/><default_encoding codec=""/><browsetable_info data="AAAABQAAAAoATQBlAGQAaQBhAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////wAAAAgATABvAGEAbgAAAAEAAAABAAAAAAAAAAAAAAAAAP//////////AAAAAP////8AAAAIAEkAdABlAG0AAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAD/////AAAAGgBJAG4AdgBlAG4AdABvAHIAeQBJAHQAZQBtAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////wAAABAAQwB1AHMAdABvAG0AZQByAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////w=="/></tab_browse><tab_sql><sql name="Assignment2_Q1.sql">--Question 1
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/kylec/Downloads/LibraryDB.sqlite" foreign_keys="1"/><window><current_tab id="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2695"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="Media"/><default_encoding codec=""/><browsetable_info data="AAAABQAAAAoATQBlAGQAaQBhAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////wAAAAgATABvAGEAbgAAAAEAAAABAAAAAAAAAAAAAAAAAP//////////AAAAAP////8AAAAIAEkAdABlAG0AAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAD/////AAAAGgBJAG4AdgBlAG4AdABvAHIAeQBJAHQAZQBtAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////wAAABAAQwB1AHMAdABvAG0AZQByAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////w=="/></tab_browse><tab_sql><sql name="Assignment2_Q1.sql">--Question 1
 /*
 Produce a table showing the total books that are currently “CheckedOut” 
 by every major. Show the Major and “Total Books Checkedout” in the
@@ -93,7 +93,14 @@ FROM Customer c LEFT OUTER JOIN (SELECT *, COUNT(OverdueFee) AS &quot;TotalloanA
 Show the number of books published each year by each author. Show only the rows for author who
 published more than 1 book in a year. The table should show author, Pubyear, and “Total Book
 Published in Year”. MediaID should not be used in this query, use MediaCode.
-*/</sql><sql name="Assignment2_Q10.sql">--Question 10
+*/
+SELECT Author, PubYear, COUNT(PubYear) AS &quot;Total Book Published in Year&quot;
+FROM Item NATURAL JOIN Media
+WHERE MediaCode = &quot;HDBK&quot; OR MediaCode = &quot;PAPER&quot; --These two mediacodes are books in the database
+GROUP BY Author
+HAVING COUNT(PubYear) &gt; 1
+--Adding ORDER BY DESC to make results easier to understand
+ORDER BY PubYear DESC</sql><sql name="Assignment2_Q10.sql">--Question 10
 /*
 Use only a left outer join to find the customers who did not make any loan. Show the CustomerID, Full
 Name, and Major. Show only the rows contain “INFO” major only.
@@ -106,4 +113,4 @@ Fletcher&quot; (exclude &quot;Barclay, Fletcher&quot;)?
 Use the SQL date modifier expression in chapter 44 of the Sqlite tutorial to add 3 days, 8 hours, 3
 minutes, and 45 seconds to the date “2018-05-11 23:59:59”. This question does not require a
 database.
-*/</sql><current_tab id="6"/></tab_sql></sqlb_project>
+*/</sql><current_tab id="8"/></tab_sql></sqlb_project>

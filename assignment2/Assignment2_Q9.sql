@@ -4,3 +4,10 @@ Show the number of books published each year by each author. Show only the rows 
 published more than 1 book in a year. The table should show author, Pubyear, and “Total Book
 Published in Year”. MediaID should not be used in this query, use MediaCode.
 */
+SELECT Author, PubYear, COUNT(PubYear) AS "Total Book Published in Year"
+FROM Item NATURAL JOIN Media
+WHERE MediaCode = "HDBK" OR MediaCode = "PAPER" --These two mediacodes are books in the database
+GROUP BY Author
+HAVING COUNT(PubYear) > 1
+--Adding ORDER BY DESC to make results easier to understand
+ORDER BY PubYear DESC
