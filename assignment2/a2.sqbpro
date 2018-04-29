@@ -108,7 +108,11 @@ ORDER BY PubYear DESC</sql><sql name="Assignment2_Q10.sql">--Question 10
 Use only a left outer join to find the customers who did not make any loan. Show the CustomerID, Full
 Name, and Major. Show only the rows contain “INFO” major only.
 */
-SELECT CustomerID, LastName || ', ' || FirstName AS 'Full Name', Major</sql><sql name="Assignment2_Q11.sql">--Question 11
+SELECT c.CustomerID AS 'Customer ID', LastName || ', ' || FirstName AS 'Full Name', Major
+FROM Customer c JOIN (SELECT *
+					  FROM Loan
+					  WHERE OverdueFee IS NULL) no_loan_table ON c.CustomerID = no_loan_table.CustomerID
+WHERE Major = 'INFO'</sql><sql name="Assignment2_Q11.sql">--Question 11
 /*
 How many students with a total overdue fee greater than half the total overdue fee of &quot;Barclay,
 Fletcher&quot; (exclude &quot;Barclay, Fletcher&quot;)?
@@ -125,4 +129,4 @@ Use the SQL date modifier expression in chapter 44 of the Sqlite tutorial to add
 minutes, and 45 seconds to the date “2018-05-11 23:59:59”. This question does not require a
 database.
 */
-SELECT datetime('2018-05-11 23:59:59') AS &quot;Original Date&quot;, datetime('2018-05-11 23:59:59', '3 days', '8 hours', '3 minutes', '45 seconds') AS &quot;Modified Date&quot;</sql><current_tab id="5"/></tab_sql></sqlb_project>
+SELECT datetime('2018-05-11 23:59:59') AS &quot;Original Date&quot;, datetime('2018-05-11 23:59:59', '3 days', '8 hours', '3 minutes', '45 seconds') AS &quot;Modified Date&quot;</sql><current_tab id="9"/></tab_sql></sqlb_project>
