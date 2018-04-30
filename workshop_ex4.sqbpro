@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="H:/info151/EmployeeDB(1).sqlite"/><window><current_tab id="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="414"/><expanded_item id="0" parent="-1"/><expanded_item id="1" parent="-1"/><expanded_item id="2" parent="-1"/><expanded_item id="3" parent="-1"/></tab_structure><tab_browse><current_table name="Department"/><default_encoding codec=""/><browsetable_info data="AAAAAgAAABAARQBtAHAAbABvAHkAZQBl+FbPwAAAAsAAAAAAAAAAAAAAAAAA/////wAAABQARABlAHAAYQByAHQAbQBlAG4AdPhPPSAAAALAAAAAAAAAAAAAAAAAAP////8="/></tab_browse><tab_sql><sql name="SQL 1">---Q1
+SELECT COUNT(EmpID) AS &quot;Number of Employees&quot;
+FROM Employee
+WHERE Salary &lt; (SELECT AVG(Salary)
+						 FROM Employee)
+
+</sql><sql name="SQL 2">---Q2
+SELECT EmpName, Age
+FROM Employee e JOIN Department d JOIN Manager m ON e.EmpID = m.EmpID AND m.DeptID = d.DeptID
+WHERE Age &gt; (SELECT AVG(Age)
+					   FROM Employee)
+
+</sql><sql name="SQL 3">---Q3
+SELECT EmpName AS 'Manager', DeptName AS 'Department', Budget
+FROM Employee e JOIN Department d JOIN Manager m ON e.EmpID = m.EmpID AND m.DeptID = d.DeptID
+WHERE Budget = (SELECT MAX(Budget)
+					        FROM Department)</sql><sql name="SQL 4">---Q4
+SELECT DeptName AS 'Department', ROUND(AVG(Salary),2) AS 'Average Salary of the Department'
+FROM Department d JOIN Work w JOIN Employee e ON d.DeptID = w.DeptID AND w.EmpID = e.EmpID								  
+WHERE DeptName IN  (SELECT DeptName AS 'Department'
+								  FROM Department d JOIN Work w JOIN Employee e ON d.DeptID = w.DeptID AND w.EmpID = e.EmpID
+								  WHERE Age &lt; 30 AND Percent_Time = 100
+								  GROUP BY DeptName
+								  HAVING COUNT(w.EmpID) &gt; 5)
+GROUP BY DeptName</sql><sql name="SQL 5">---Q5
+SELECT DeptName AS 'Department', d.Budget, T.EmpName, T.FromDate AS &quot;Start Date&quot;, T.ToDate AS 'End Date'
+FROM Department d LEFT OUTER JOIN (SELECT *
+															FROM Employee e JOIN Manager m ON e.EmpID = m.EmpID) T ON d.MgrEmpID = T.EmpID
+
+
+
+
+</sql><sql name="SQL 6">---Q6
+SELECT EmpName AS 'Name', DeptName AS 'Department Name'
+FROM Department d JOIN Work w JOIN Employee e ON d.DeptID = w.DeptID AND w.EmpID = e.EmpID
+WHERE DeptName = &quot;Operations&quot; AND EmpName LIKE '% w%' and Percent_Time = 100
+
+/*
+SELECT EmpName AS 'Name', DeptName AS 'Department Name'
+FROM Department d JOIN Work w JOIN Employee e ON d.DeptID = w.DeptID AND w.EmpID = e.EmpID
+WHERE DeptName = &quot;Operations&quot; AND EmpName IN  (SELECT EmpName
+																			  FROM Department d JOIN Work w JOIN Employee e ON d.DeptID = w.DeptID AND w.EmpID = e.EmpID
+																			  WHERE EmpName LIKE '% w%' and Percent_Time = 100)
+*/
+
+</sql><sql name="SQL 7">SELECT *
+FROM Employee e JOIN Manager m ON e.EmpID = m.EmpID</sql><sql name="SQL 9">SELECT EmpName AS 'Name', DeptName AS 'Department Name'
+FROM Department d JOIN Work w JOIN Employee e ON d.DeptID = w.DeptID AND w.EmpID = e.EmpID
+WHERE DeptName = &quot;Operations&quot; AND EmpName LIKE '% w%' and Percent_Time = 100</sql><current_tab id="5"/></tab_sql></sqlb_project>
