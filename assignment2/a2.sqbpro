@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/kylec/Downloads/LibraryDB.sqlite" foreign_keys="1"/><window><current_tab id="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2695"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="Loan"/><default_encoding codec=""/><browsetable_info data="AAAABQAAAAoATQBlAGQAaQBhAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////wAAAAgATABvAGEAbgAAAAUAAAABAAAAAAAAAAEAAAAGAAAAAAAAAAAA//////////8AAAAA/////wAAAAgASQB0AGUAbQAAAAAAAAAAAAAAAAAAAAAAAAAAAP//////////AAAAAP////8AAAAaAEkAbgB2AGUAbgB0AG8AcgB5AEkAdABlAG0AAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAD/////AAAAEABDAHUAcwB0AG8AbQBlAHIAAAACAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAD/////"/></tab_browse><tab_sql><sql name="Assignment2_Q1.sql">--Question 1
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/kylec/Downloads/LibraryDB.sqlite" foreign_keys="1"/><window><current_tab id="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2695"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="Loan"/><default_encoding codec=""/><browsetable_info data="AAAABQAAAAoATQBlAGQAaQBhAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////wAAAAgATABvAGEAbgAAAAIAAAAAAAAAAAAAAAEAAAAGAAAAAAAAAAAA//////////8AAAAA/////wAAAAgASQB0AGUAbQAAAAAAAAAAAAAAAAAAAAAAAAAAAP//////////AAAAAP////8AAAAaAEkAbgB2AGUAbgB0AG8AcgB5AEkAdABlAG0AAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAD/////AAAAEABDAHUAcwB0AG8AbQBlAHIAAAACAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAD/////"/></tab_browse><tab_sql><sql name="Assignment2_Q1.sql">--Question 1
 /*
 Produce a table showing the total books that are currently “CheckedOut” 
 by every major. Show the Major and “Total Books Checkedout” in the
@@ -118,8 +118,8 @@ Use only a left outer join to find the customers who did not make any loan. Show
 Name, and Major. Show only the rows contain “INFO” major only.
 */
 SELECT DISTINCT c.CustomerID, LastName || ', ' || FirstName AS 'Full Name', Major  -- used DISTINCT as there were duplicate names
-FROM Customer c LEFT OUTER JOIN Loan l ON c.CustomerID = l.CustomerID
-WHERE Major = 'INFO'</sql><sql name="Assignment2_Q11.sql">--Question 11
+FROM Customer c LEFT OUTER JOIN Loan l ON c.CustomerID = l.CustomerID 
+WHERE Major = 'INFO' AND l.CustomerID IS NULL  --by checking if right_table.CustomerID == null, we eliminate the inner join matching results.</sql><sql name="Assignment2_Q11.sql">--Question 11
 /*
 How many students with a total overdue fee greater than half the total overdue fee of &quot;Barclay,
 Fletcher&quot; (exclude &quot;Barclay, Fletcher&quot;)?
@@ -136,4 +136,4 @@ Use the SQL date modifier expression in chapter 44 of the Sqlite tutorial to add
 minutes, and 45 seconds to the date “2018-05-11 23:59:59”. This question does not require a
 database.
 */
-SELECT datetime('2018-05-11 23:59:59') AS &quot;Original Date&quot;, datetime('2018-05-11 23:59:59', '3 days', '8 hours', '3 minutes', '45 seconds') AS &quot;Modified Date&quot;</sql><current_tab id="11"/></tab_sql></sqlb_project>
+SELECT datetime('2018-05-11 23:59:59') AS &quot;Original Date&quot;, datetime('2018-05-11 23:59:59', '3 days', '8 hours', '3 minutes', '45 seconds') AS &quot;Modified Date&quot;</sql><current_tab id="10"/></tab_sql></sqlb_project>
