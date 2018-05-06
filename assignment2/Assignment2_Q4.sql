@@ -5,8 +5,9 @@ overdue fee. Sort the output by the ‘Number of times overdue’ in descending 
 overdue fee’ in descending order. Show only the total overdue fee greater or equal to $5 but less than
 $100.
 */
-SELECT loa.CustomerID, FirstName || ' ' || LastName AS 'Full Name', COUNT(OverdueFee) AS "Number of times overdue", SUM(OverdueFee) AS "Total overdue fee"
+SELECT LastName || ', ' || FirstName AS 'Full Name', COUNT(OverdueFee) AS "Number of times overdue", SUM(OverdueFee) AS "Total overdue fee"
 FROM CUSTOMER cus JOIN LOAN loa ON cus.CustomerID = loa.CustomerID
-WHERE OverdueFee is not NULL and OverdueFee >= 5 and OverdueFee < 100
-GROUP BY loa.CustomerID
+WHERE OverdueFee IS NOT NULL --if overduefee is not null, then cutomer has overdue fee
+GROUP BY LastName || ', ' || FirstName
+HAVING SUM(OverdueFee) >= 5 AND SUM(OverdueFee) < 100
 ORDER BY COUNT(OverdueFee) DESC, SUM(OverdueFee) DESC

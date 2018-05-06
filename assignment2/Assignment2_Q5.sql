@@ -13,5 +13,5 @@ Name, CustomerID, and Major in your results.
 */
 SELECT CustomerID, LastName || ', ' || FirstName AS 'Full Name', Major
 FROM Customer
-WHERE Major = 'INFO' AND LastName || ', ' || FirstName NOT IN(SELECT DISTINCT c.LastName || ', ' || c.FirstName
+WHERE Major = 'INFO' AND LastName || ', ' || FirstName NOT IN(SELECT DISTINCT c.LastName || ', ' || c.FirstName	  -- if customer name is not int his subquery, then they did not make a loan.
 															  FROM Customer c JOIN Loan l on c.CustomerID = l.CustomerID)

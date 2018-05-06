@@ -9,6 +9,6 @@ strftime() function to deal with the year and month.
 */
 SELECT Gender, strftime('%Y',CheckedOut) AS "Year", strftime('%m',CheckedOut) AS "Month", COUNT(CheckedOut) AS "The Number of Loans"
 FROM Customer c JOIN Loan l ON c.CustomerID = l.CustomerID
-GROUP BY strftime('%m',CheckedOut)
+GROUP BY strftime('%m',CheckedOut)  --is group by using correct condition?
 HAVING COUNT(CheckedOut) < 25
 ORDER BY Gender DESC, strftime('%Y',CheckedOut) ASC, strftime('%m',CheckedOut) ASC

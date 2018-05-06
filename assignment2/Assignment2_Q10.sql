@@ -3,8 +3,6 @@
 Use only a left outer join to find the customers who did not make any loan. Show the CustomerID, Full
 Name, and Major. Show only the rows contain “INFO” major only.
 */
-SELECT c.CustomerID AS 'Customer ID', LastName || ', ' || FirstName AS 'Full Name', Major
-FROM Customer c JOIN (SELECT *
-					  FROM Loan
-					  WHERE OverdueFee IS NULL) no_loan_table ON c.CustomerID = no_loan_table.CustomerID
+SELECT DISTINCT c.CustomerID, LastName || ', ' || FirstName AS 'Full Name', Major  -- used DISTINCT as there were duplicate names
+FROM Customer c LEFT OUTER JOIN Loan l ON c.CustomerID = l.CustomerID
 WHERE Major = 'INFO'

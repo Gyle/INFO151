@@ -5,8 +5,8 @@ Fletcher" (exclude "Barclay, Fletcher")?
 */
 SELECT DISTINCT LastName || ', ' || FirstName AS 'Full Name', COUNT(OverdueFee) AS "Number of Overdue Fees", SUM(OverdueFee) AS "Overdue Fee"
 FROM Customer c JOIN Loan l ON c.CustomerID = l.CustomerID
-WHERE NOT LastName = "Barclay"
+WHERE NOT LastName || ', ' || FirstName = "Barclay, Fletcher"
 GROUP BY LastName
-HAVING SUM (OverdueFee) > (SELECT SUM(OverdueFee)
-						   FROM Customer NATURAL JOIN Loan
+HAVING SUM (OverdueFee) > (SELECT SUM(OverdueFee) -- I am comparing OverdueFee in having clause as this question wants to compare by 'total overdue fee'
+						   FROM Customer c1 JOIN Loan l1 ON c1.CustomerID = l1.CustomerID
 						   WHERE LastName = "Barclay" AND FirstName = "Fletcher") / 2
