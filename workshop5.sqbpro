@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="H:/info151/EmployeeDB(1).sqlite"/><window><current_tab id="1"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="467"/><expanded_item id="0" parent="-1"/><expanded_item id="1" parent="-1"/><expanded_item id="2" parent="-1"/><expanded_item id="3" parent="-1"/></tab_structure><tab_browse><current_table name="Certificate"/><default_encoding codec=""/><browsetable_info data="AAAABQAAAAgAVwBvAHIAawAAAAIAAAAAAAAAAAAAAAAAAAAAAP////8AAAAOAE0AYQBuAGEAZwBlAHIlCQaQAAABuQAAAAAAAAAAAAAAAAD/////AAAAEABFAG0AcABsAG8AeQBlAGUkQmbAAAABuQAAAAAAAAAAAAAAAAD/////AAAAFABEAGUAcABhAHIAdABtAGUAbgB0JRuY8AAAAbkAAAAAAAAAAAAAAAAA/////wAAABYAQwBlAHIAdABpAGYAaQBjAGEAdABlKG5m8AAAAbkAAAAAAAAAAAAAAAAA/////w=="/></tab_browse><tab_sql><sql name="SQL 1">--Q1
+UPDATE Work
+SET DeptID = (SELECT DeptID 
+					  FROM Department
+					  WHERE DeptName = &quot;Public Relation&quot;)
+WHERE Percent_Time = 100 AND DeptID IN  (SELECT DeptID
+																  FROM Department
+																  WHERE DeptName = &quot;Legal&quot;)
+
+</sql><sql name="SQL 2">--Q2
+DELETE FROM Department
+WHERE DeptName = &quot;Legal&quot;</sql><sql name="SQL 3">--Q3.1
+CREATE Table Course( -- create course first because certificate needs to know courseID
+	CourseID Integer PRIMARY KEY,
+	CourseTitle TEXT NOT NULL
+	);
+
+CREATE Table Certificate(
+	CertID Integer PRIMARY KEY AUTOINCREMENT,
+	EmpID Integer,
+	CourseID Integer,
+	FOREIGN KEY ('EmpID') REFERENCES Employee('EmpID'),
+	FOREIGN KEY ('CourseID') REFERENCES Course('CourseID')
+	);
+	
+--Q3.2
+INSERT INTO Course
+Values (1, &quot;Digital Marketing and New Product Development&quot;),
+		   (2, &quot;Leadership&quot;);
+
+INSERT INTO Certificate(EmpID,CourseID)
+Values (11564812, 1),
+		   (128778823,1),
+		   (98784544, 1),
+		   (98784544, 2);
+
+--3.3
+ALTER TABLE Certificate
+ADD CertificateDate Date;</sql><current_tab id="2"/></tab_sql></sqlb_project>
