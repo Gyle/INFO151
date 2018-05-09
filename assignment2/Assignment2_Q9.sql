@@ -9,5 +9,3 @@ FROM Item i JOIN Media m ON i.MediaID = m.MediaID
 WHERE MediaCode = "HDBK" OR MediaCode = "PAPER" --These two mediacodes are books in the database
 GROUP BY Author
 HAVING COUNT(PubYear) > 1
---Adding ORDER BY DESC to make results easier to understand
-ORDER BY PubYear DESC

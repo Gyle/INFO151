@@ -41,8 +41,8 @@ $100.
 */
 SELECT LastName || ', ' || FirstName AS 'Full Name', COUNT(OverdueFee) AS &quot;Number of times overdue&quot;, SUM(OverdueFee) AS &quot;Total overdue fee&quot;
 FROM CUSTOMER cus JOIN LOAN loa ON cus.CustomerID = loa.CustomerID
-WHERE OverdueFee IS NOT NULL --if overduefee is not null, then cutomer has overdue fee
-GROUP BY LastName || ', ' || FirstName
+--WHERE OverdueFee IS NOT NULL --if overduefee is not null, then cutomer has overdue fee
+GROUP BY LastName || ', ' || FirstName
 HAVING SUM(OverdueFee) &gt;= 5 AND SUM(OverdueFee) &lt; 100
 ORDER BY COUNT(OverdueFee) DESC, SUM(OverdueFee) DESC</sql><sql name="Assignment2_Q5.sql">--Question 5
 /*
@@ -68,10 +68,11 @@ half the total overdue fee of &quot;Barclay, Fletcher&quot;? You must use 6(a) a
 the “NOT” SQL in this question.
 */
 
-SELECT DISTINCT LastName || ', ' || FirstName AS 'Full Name', COUNT(OverdueFee) AS &quot;Number of Overdue Fees&quot;, SUM(OverdueFee) AS &quot;Overdue Fee&quot;
+--SELECT DISTINCT LastName || ', ' || FirstName AS 'Full Name', COUNT(OverdueFee) AS &quot;Number of Overdue Fees&quot;, SUM(OverdueFee) AS &quot;Overdue Fee&quot;
+SELECT DISTINCT LastName || ', ' || FirstName AS 'Full Name', SUM(OverdueFee) AS &quot;Single Overdue Fee&quot;
 FROM Customer c JOIN Loan l ON c.CustomerID = l.CustomerID 
-WHERE NOT LastName || ', ' || FirstName = &quot;Barclay, Fletcher&quot; AND OverdueFee &gt; (SELECT SUM(OverdueFee)	-- I am comparing OverdueFee in where clause as this question wants to compare by 'single overdue fee'
-																			    FROM Customer c1 JOIN Loan l1 ON c1.CustomerID = l1.CustomerID
+WHERE NOT LastName || ', ' || FirstName = &quot;Barclay, Fletcher&quot; AND OverdueFee &gt; (SELECT SUM(OverdueFee)	-- I am comparing OverdueFee in where clause as this question wants to compare by 'single overdue fee'
+																			    FROM Customer c1 JOIN Loan l1 ON c1.CustomerID = l1.CustomerID
 																			    WHERE LastName || ', ' || FirstName = &quot;Barclay, Fletcher&quot;) / 2
 GROUP BY LastName || ', ' || FirstName
 /*HAVING COUNT(OverdueFee) = 1 AND SUM (OverdueFee) &gt; (SELECT SUM(OverdueFee)
@@ -88,7 +89,7 @@ strftime() function to deal with the year and month.
 */
 SELECT Gender, strftime('%Y',CheckedOut) AS &quot;Year&quot;, strftime('%m',CheckedOut) AS &quot;Month&quot;, COUNT(CheckedOut) AS &quot;The Number of Loans&quot;
 FROM Customer c JOIN Loan l ON c.CustomerID = l.CustomerID
-GROUP BY strftime('%m',CheckedOut)  --is group by using correct condition?
+GROUP BY strftime('%Y',CheckedOut), strftime('%m',CheckedOut)
 HAVING COUNT(CheckedOut) &lt; 25
 ORDER BY Gender DESC, strftime('%Y',CheckedOut) ASC, strftime('%m',CheckedOut) ASC</sql><sql name="Assignment2_Q8.sql">--Question 8
 /*
@@ -110,9 +111,7 @@ SELECT Author, PubYear, COUNT(PubYear) AS &quot;Total Book Published in Year&quo
 FROM Item i JOIN Media m ON i.MediaID = m.MediaID
 WHERE MediaCode = &quot;HDBK&quot; OR MediaCode = &quot;PAPER&quot; --These two mediacodes are books in the database
 GROUP BY Author
-HAVING COUNT(PubYear) &gt; 1
---Adding ORDER BY DESC to make results easier to understand
-ORDER BY PubYear DESC</sql><sql name="Assignment2_Q10.sql">--Question 10
+HAVING COUNT(PubYear) &gt; 1</sql><sql name="Assignment2_Q10.sql">--Question 10
 /*
 Use only a left outer join to find the customers who did not make any loan. Show the CustomerID, Full
 Name, and Major. Show only the rows contain “INFO” major only.
@@ -124,10 +123,11 @@ WHERE Major = 'INFO' AND l.CustomerID IS NULL  --by checking if right_table.Cust
 How many students with a total overdue fee greater than half the total overdue fee of &quot;Barclay,
 Fletcher&quot; (exclude &quot;Barclay, Fletcher&quot;)?
 */
-SELECT DISTINCT LastName || ', ' || FirstName AS 'Full Name', COUNT(OverdueFee) AS &quot;Number of Overdue Fees&quot;, SUM(OverdueFee) AS &quot;Overdue Fee&quot;
+--SELECT DISTINCT LastName || ', ' || FirstName AS 'Full Name', COUNT(OverdueFee) AS &quot;Number of Overdue Fees&quot;, SUM(OverdueFee) AS &quot;Total Overdue Fee&quot;
+SELECT DISTINCT LastName || ', ' || FirstName AS 'Full Name', SUM(OverdueFee) AS &quot;Total Overdue Fee&quot;
 FROM Customer c JOIN Loan l ON c.CustomerID = l.CustomerID
 WHERE NOT LastName || ', ' || FirstName = &quot;Barclay, Fletcher&quot;
-GROUP BY LastName
+GROUP BY LastName || ', ' || FirstName
 HAVING SUM (OverdueFee) &gt; (SELECT SUM(OverdueFee) -- I am comparing OverdueFee in having clause as this question wants to compare by 'total overdue fee'
 						   FROM Customer c1 JOIN Loan l1 ON c1.CustomerID = l1.CustomerID
 						   WHERE LastName = &quot;Barclay&quot; AND FirstName = &quot;Fletcher&quot;) / 2</sql><sql name="Assignment2_Q12.sql">--Question 12
@@ -136,4 +136,4 @@ Use the SQL date modifier expression in chapter 44 of the Sqlite tutorial to add
 minutes, and 45 seconds to the date “2018-05-11 23:59:59”. This question does not require a
 database.
 */
-SELECT datetime('2018-05-11 23:59:59') AS &quot;Original Date&quot;, datetime('2018-05-11 23:59:59', '3 days', '8 hours', '3 minutes', '45 seconds') AS &quot;Modified Date&quot;</sql><current_tab id="10"/></tab_sql></sqlb_project>
+SELECT datetime('2018-05-11 23:59:59') AS &quot;Original Date&quot;, datetime('2018-05-11 23:59:59', '3 days', '8 hours', '3 minutes', '45 seconds') AS &quot;Modified Date&quot;</sql><current_tab id="3"/></tab_sql></sqlb_project>

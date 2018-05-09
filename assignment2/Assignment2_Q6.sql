@@ -6,7 +6,8 @@ half the total overdue fee of "Barclay, Fletcher"? You must use 6(a) as a subque
 the “NOT” SQL in this question.
 */
 
-SELECT DISTINCT LastName || ', ' || FirstName AS 'Full Name', COUNT(OverdueFee) AS "Number of Overdue Fees", SUM(OverdueFee) AS "Overdue Fee"
+--SELECT DISTINCT LastName || ', ' || FirstName AS 'Full Name', COUNT(OverdueFee) AS "Number of Overdue Fees", SUM(OverdueFee) AS "Overdue Fee"
+SELECT DISTINCT LastName || ', ' || FirstName AS 'Full Name', SUM(OverdueFee) AS "Overdue Fee"
 FROM Customer c JOIN Loan l ON c.CustomerID = l.CustomerID 
 WHERE NOT LastName || ', ' || FirstName = "Barclay, Fletcher" AND OverdueFee > (SELECT SUM(OverdueFee)	-- I am comparing OverdueFee in where clause as this question wants to compare by 'single overdue fee'
 																			    FROM Customer c1 JOIN Loan l1 ON c1.CustomerID = l1.CustomerID
