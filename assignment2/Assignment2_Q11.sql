@@ -3,7 +3,6 @@
 How many students with a total overdue fee greater than half the total overdue fee of "Barclay,
 Fletcher" (exclude "Barclay, Fletcher")?
 */
---SELECT DISTINCT LastName || ', ' || FirstName AS 'Full Name', COUNT(OverdueFee) AS "Number of Overdue Fees", SUM(OverdueFee) AS "Total Overdue Fee"
 SELECT DISTINCT LastName || ', ' || FirstName AS 'Full Name', SUM(OverdueFee) AS "Total Overdue Fee"
 FROM Customer c JOIN Loan l ON c.CustomerID = l.CustomerID
 WHERE NOT LastName || ', ' || FirstName = "Barclay, Fletcher"

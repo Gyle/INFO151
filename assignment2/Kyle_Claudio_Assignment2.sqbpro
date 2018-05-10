@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/kylec/Downloads/LibraryDB.sqlite" foreign_keys="1"/><window><current_tab id="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2695"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="Loan"/><default_encoding codec=""/><browsetable_info data="AAAABQAAAAoATQBlAGQAaQBhAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////wAAAAgATABvAGEAbgAAAAIAAAAAAAAAAAAAAAEAAAAGAAAAAAAAAAAA//////////8AAAAA/////wAAAAgASQB0AGUAbQAAAAAAAAAAAAAAAAAAAAAAAAAAAP//////////AAAAAP////8AAAAaAEkAbgB2AGUAbgB0AG8AcgB5AEkAdABlAG0AAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAD/////AAAAEABDAHUAcwB0AG8AbQBlAHIAAAACAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAD/////"/></tab_browse><tab_sql><sql name="Assignment2_Q1.sql">--Question 1
+/*
+Produce a table showing the total books that are currently “CheckedOut” 
+by every major. Show the Major and “Total Books Checkedout” in the
+query result and sort the “Total Books Checkedout” in descending order. 
+Use only the MediaCode in the Where condition.
+*/
+SELECT c.Major, COUNT(status) as 'Total Books Checkedout'
+FROM Media m JOIN Item i JOIN InventoryItem inven JOIN Loan l JOIN Customer c
+	ON  m.MediaID = i.MediaID AND i.ItemID = inven.ItemID AND inven.InventoryItemID = l.InventoryItemID AND l.CustomerID = c.CustomerID
+WHERE MediaCode = &quot;HDBK&quot; OR MediaCode = &quot;PAPER&quot; --These two mediacodes are books in the database
+GROUP BY Major
+ORDER BY COUNT(status) DESC</sql><sql name="Assignment2_Q2.sql">--Question 2
+/*
+Produce a table showing the total books published by each author between 
+2000 and 2015. Show only the rows if the total published books is greater 
+or equal 3. Sort the authors in ascending order. Assuming you do not 
+know the MediaID but you know the MediaCode.
+*/
+SELECT Author, COUNT(PubYear) AS 'Total Books Published'
+FROM Item i JOIN Media m ON	i.MediaID = m.MediaID 
+WHERE PubYear &gt;= 2000 AND PubYear &lt;= 2015 AND MediaCode = &quot;HDBK&quot; OR MediaCode = &quot;PAPER&quot; --These two mediacodes are books in the database
+GROUP BY Author
+HAVING COUNT(PubYear) &gt;= 3
+ORDER BY Author ASC
+</sql><sql name="Assignment2_Q3.sql">--Question 3
+/* 
+Find the customers who have an item due on the 8th August 2015 and 
+has not “checkedin” in the loan table. Sort the Full Name in ascending order. 
+Show only the date without the time. Do not use strftime() in this question.
+*/
+SELECT LastName || ', ' || FirstName AS 'Full Name', DATE(DueDate) AS  'Due Date'
+FROM Customer Cus JOIN Loan Lon ON Cus.CustomerID = Lon.CustomerID
+WHERE Date(DueDate) = '2015-08-08' AND CheckedIn IS NULL  -- if checkedin is null, then customer has not checked in the load table.
+ORDER BY LastName || ', ' || FirstName ASC</sql><sql name="Assignment2_Q4.sql">--Question 4
+/*
+The library would like to know the number of times a customer has an overdue fee and their total
+overdue fee. Sort the output by the ‘Number of times overdue’ in descending order then by the ‘Total
+overdue fee’ in descending order. Show only the total overdue fee greater or equal to $5 but less than
+$100.
+*/
+SELECT LastName || ', ' || FirstName AS 'Full Name', COUNT(OverdueFee) AS &quot;Number of times overdue&quot;, SUM(OverdueFee) AS &quot;Total overdue fee&quot;
+FROM CUSTOMER cus JOIN LOAN loa ON cus.CustomerID = loa.CustomerID
+GROUP BY LastName || ', ' || FirstName						-- There is no point having a WHERE clause to check if overdue is null because the
+HAVING SUM(OverdueFee) &gt;= 5 AND SUM(OverdueFee) &lt; 100		-- HAVING clause only shows fees at least of $5. $0 means no overdue fee so this
+ORDER BY COUNT(OverdueFee) DESC, SUM(OverdueFee) DESC		-- HAVING clause covers the explicit request.</sql><sql name="Assignment2_Q5.sql">--Question 5
+/*
+ (a) Find all the unique customer full name with at least one loan.
+*Important*
+(1) Use the join syntax below for questions that require an inner join. Other syntax will not
+be accepted.
+SELECT column-list
+FROM table 1 JOIN table 2 ON joint-condition
+Where conditions
+(2) Use “=” sign, for example “percent_time =100” not “percent_time IS 100”.
+(b) Use 5(a) as a subquery, find all INFO students who did not make any loan. Include both their Full
+Name, CustomerID, and Major in your results. 
+*/
+SELECT CustomerID, LastName || ', ' || FirstName AS 'Full Name', Major
+FROM Customer
+WHERE Major = 'INFO' AND LastName || ', ' || FirstName NOT IN(SELECT DISTINCT c.LastName || ', ' || c.FirstName	  -- if customer name is not int his subquery, then they did not make a loan.
+															  FROM Customer c JOIN Loan l on c.CustomerID = l.CustomerID)</sql><sql name="Assignment2_Q6.sql">--Question 6
+/*
+(a) Find the total overdue fee for the customer &quot;Barclay, Fletcher&quot; without using ID in the query.
+(b) How many distinct students (exclude &quot;Barclay, Fletcher&quot;) with a single overdue fee greater than
+half the total overdue fee of &quot;Barclay, Fletcher&quot;? You must use 6(a) as a subquery. You must use
+the “NOT” SQL in this question.
+*/
+SELECT DISTINCT LastName || ', ' || FirstName AS 'Full Name', SUM(OverdueFee) AS &quot;Single Overdue Fee&quot;
+FROM Customer c JOIN Loan l ON c.CustomerID = l.CustomerID 
+WHERE NOT LastName || ', ' || FirstName = &quot;Barclay, Fletcher&quot; AND OverdueFee &gt; (SELECT SUM(OverdueFee)	-- I am comparing OverdueFee in where clause as this question wants to compare by 'single overdue fee'
+																			    FROM Customer c1 JOIN Loan l1 ON c1.CustomerID = l1.CustomerID
+																			    WHERE LastName || ', ' || FirstName = &quot;Barclay, Fletcher&quot;) / 2
+GROUP BY LastName || ', ' || FirstName</sql><sql name="Assignment2_Q7.sql">--Question 7
+/*
+The manager is interested to know yearly borrowing volume by Gender. Present a table displaying the
+Gender, Year, Month and The Number of Loans. Sort the results in descending order by Gender,
+ascending order by Year and ascending order by Month. Show only the rows if the number of loans is
+less than 25.
+Hint: (1) Use CheckedOut date to extract the year and month when the book is loaned; (2) Use
+strftime() function to deal with the year and month.
+*/
+SELECT Gender, strftime('%Y',CheckedOut) AS &quot;Year&quot;, strftime('%m',CheckedOut) AS &quot;Month&quot;, COUNT(CheckedOut) AS &quot;The Number of Loans&quot;
+FROM Customer c JOIN Loan l ON c.CustomerID = l.CustomerID
+GROUP BY strftime('%Y',CheckedOut), strftime('%m',CheckedOut)
+HAVING COUNT(CheckedOut) &lt; 25
+ORDER BY Gender DESC, strftime('%Y',CheckedOut) ASC, strftime('%m',CheckedOut) ASC</sql><sql name="Assignment2_Q8.sql">--Question 8
+/*
+(a) Find the total number of loan for each customerID.
+(b) Show the total number of loan for each customer include customers who have no loan. You must
+use 8(a) as sub-query to form the right part of the outer join table. Show the result according to the
+format below
+*/
+SELECT c.CustomerID, LastName, FirstName, T.Totalloan
+FROM Customer c LEFT OUTER JOIN (SELECT *, COUNT(CustomerID) AS &quot;Totalloan&quot;  -- count of customerID counts how many times they appear in the loan table
+								 FROM Loan
+								 GROUP BY CustomerID) T ON c.CustomerID = T.CustomerID</sql><sql name="Assignment2_Q9.sql">--Question 9
+/*
+Show the number of books published each year by each author. Show only the rows for author who
+published more than 1 book in a year. The table should show author, Pubyear, and “Total Book
+Published in Year”. MediaID should not be used in this query, use MediaCode.
+*/
+SELECT Author, PubYear, COUNT(PubYear) AS &quot;Total Book Published in Year&quot;
+FROM Item i JOIN Media m ON i.MediaID = m.MediaID
+WHERE MediaCode = &quot;HDBK&quot; OR MediaCode = &quot;PAPER&quot; --These two mediacodes are books in the database
+GROUP BY Author
+HAVING COUNT(PubYear) &gt; 1</sql><sql name="Assignment2_Q10.sql">--Question 10
+/*
+Use only a left outer join to find the customers who did not make any loan. Show the CustomerID, Full
+Name, and Major. Show only the rows contain “INFO” major only.
+*/
+SELECT DISTINCT c.CustomerID, LastName || ', ' || FirstName AS 'Full Name', Major  -- used DISTINCT as there were duplicate names
+FROM Customer c LEFT OUTER JOIN Loan l ON c.CustomerID = l.CustomerID 
+WHERE Major = 'INFO' AND l.CustomerID IS NULL  --by checking if right_table.CustomerID == null, we eliminate the inner join matching results.</sql><sql name="Assignment2_Q11.sql">--Question 11
+/*
+How many students with a total overdue fee greater than half the total overdue fee of &quot;Barclay,
+Fletcher&quot; (exclude &quot;Barclay, Fletcher&quot;)?
+*/
+SELECT DISTINCT LastName || ', ' || FirstName AS 'Full Name', SUM(OverdueFee) AS &quot;Total Overdue Fee&quot;
+FROM Customer c JOIN Loan l ON c.CustomerID = l.CustomerID
+WHERE NOT LastName || ', ' || FirstName = &quot;Barclay, Fletcher&quot;
+GROUP BY LastName || ', ' || FirstName
+HAVING SUM (OverdueFee) &gt; (SELECT SUM(OverdueFee) -- I am comparing OverdueFee in having clause as this question wants to compare by 'total overdue fee'
+						   FROM Customer c1 JOIN Loan l1 ON c1.CustomerID = l1.CustomerID
+						   WHERE LastName = &quot;Barclay&quot; AND FirstName = &quot;Fletcher&quot;) / 2</sql><sql name="Assignment2_Q12.sql">--Question 12
+/*
+Use the SQL date modifier expression in chapter 44 of the Sqlite tutorial to add 3 days, 8 hours, 3
+minutes, and 45 seconds to the date “2018-05-11 23:59:59”. This question does not require a
+database.
+*/
+SELECT datetime('2018-05-11 23:59:59') AS &quot;Original Date&quot;, datetime('2018-05-11 23:59:59', '3 days', '8 hours', '3 minutes', '45 seconds') AS &quot;Modified Date&quot;</sql><current_tab id="3"/></tab_sql></sqlb_project>
