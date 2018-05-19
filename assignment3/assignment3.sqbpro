@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/kylec/Downloads/LibraryDB.sqlite" foreign_keys="1"/><window><current_tab id="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="125"/><column_width id="3" width="2695"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="Item"/><default_encoding codec=""/><browsetable_info data="AAAAAwAAAAgASQB0AGUAbQAAAAUAAAAAAAAAAAAAAAAAAAAAAP//////////AAAAAP////8AAAAaAEkAbgB2AGUAbgB0AG8AcgB5AEkAdABlAG0AAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAD/////AAAAEABDAHUAcwB0AG8AbQBlAHIAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAD/////"/></tab_browse><tab_sql><sql name="Assignment3_Q1.sql">--Question 1
+/*Write the SQL to update the Replacement Cost of all items published between
+2005 and 2010. The new replacement cost = old replacement cost + (0.5% of
+old replacement cost) X (Published Year - 2005) and at the same time update
+the LostFee. The LostFee is the new ReplacementCost plus a re-stocking fee of
+$10. (Note: use only one update statement.)*/
+
+UPDATE Item
+SET ReplacementCost = ROUND(ReplacementCost + (ReplacementCost * 0.05) * (PubYear - 2005),2),
+	LostFee = ROUND(ReplacementCost + (ReplacementCost * 0.05) * (PubYear - 2005),2) + 10
+WHERE PubYear BETWEEN 2005 AND 2010</sql><sql name="Assignment3_Q2.sql">--Question 2
+/*Write the SQL to delete the rows in the Loan table where the *overdue fee* is less
+than the average overdue fee in the Loan table. (Note: use only one delete
+statement.)*/
+
+DELETE FROM Loan
+WHERE OverdueFee &lt; (SELECT AVG(OverdueFee)
+					FROM Loan )
+
+</sql><sql name="Assignment3_Q3.sql">--Question 3
+/*. Write the SQL statement to update the “DueDate” of all the “DVD” items
+borrowed by “INFO” students in the Loan table. The new ”DueDate” is the
+original “DueDate” plus 10 days and 12 hours. (Note: ignore the “CheckedIn”
+column.)*/
+
+UPDATE Loan
+SET DueDate = datetime(DueDate, '10 days', '12 hours') 
+WHERE LoanID IN (SELECT l.LoanID
+				 FROM Customer c JOIN Loan l JOIN InventoryItem ii JOIN Item i JOIN Media m
+					  ON c.CustomerID = l.CustomerID AND l.InventoryItemID = ii.InventoryItemID AND ii.ItemID = i.ItemID AND i.MediaID = m.MediaID
+				 WHERE Major = 'INFO' AND MediaCode = 'DVD')
+
+</sql><sql name="Assignment3_Q3_subquery.sql">--Question 3 SUB QUERY
+SELECT l.LoanID
+FROM Customer c JOIN Loan l JOIN InventoryItem ii JOIN Item i JOIN Media m
+	 ON c.CustomerID = l.CustomerID AND l.InventoryItemID = ii.InventoryItemID AND ii.ItemID = i.ItemID AND i.MediaID = m.MediaID
+WHERE Major = 'INFO' AND MediaCode = 'DVD'</sql><sql name="Assignment3_Q4a.sql">--Question 4a
+/*The Library manager plans to group items by genre and asks the database
+administrator for these changes to the database. Database administrator makes
+the following suggestions. Write the SQL statements to implement his
+suggestions.
+(a) Create a table named Category. The Category table contains three attributes:
+i. CategoryID: Integer, Primary Key (without auto-increment)
+ii. CategoryDescription: Text
+iii. CategoryCode: Text*/
+
+CREATE TABLE Category(
+	CategoryID INTEGER PRIMARY KEY,
+	CategoryDescription TEXT,
+	CategoryCode Text
+)
+</sql><sql name="Assignment3_Q4b.sql">--Question 4b
+/*(b) After creating the above table, the library manager wants to add a MediaID
+attribute which is a foreign key from the Media table to the Category table.
+Write the alter SQL to add MediaID in the table. Use the Integer data type
+for the MediaID attribute.*/
+
+ALTER TABLE Category
+ADD MediaID INTEGER
+
+--ALTER TABLE Category
+--ADD FOREIGN KEY(`MediaID`) REFERENCES Media(MediaID);</sql><current_tab id="5"/></tab_sql></sqlb_project>
