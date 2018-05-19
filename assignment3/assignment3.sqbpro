@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/kylec/Downloads/LibraryDB.sqlite" foreign_keys="1"/><window><current_tab id="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="125"/><column_width id="3" width="2695"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="Item"/><default_encoding codec=""/><browsetable_info data="AAAAAwAAAAgASQB0AGUAbQAAAAUAAAAAAAAAAAAAAAAAAAAAAP//////////AAAAAP////8AAAAaAEkAbgB2AGUAbgB0AG8AcgB5AEkAdABlAG0AAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAD/////AAAAEABDAHUAcwB0AG8AbQBlAHIAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAD/////"/></tab_browse><tab_sql><sql name="Assignment3_Q1.sql">--Question 1
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/kylec/Downloads/LibraryDB.sqlite" foreign_keys="1"/><window><current_tab id="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="125"/><column_width id="3" width="2695"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="InventoryItem"/><default_encoding codec=""/><browsetable_info data="AAAABQAAAAgATABvAGEAbgAAAAIAAAAAAAAAAAAAAAAAAAAAAP//////////AAAAAP////8AAAAIAEkAdABlAG0AAAAFAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAD/////AAAAGgBJAG4AdgBlAG4AdABvAHIAeQBJAHQAZQBtAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////wAAABAAQwB1AHMAdABvAG0AZQByAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////wAAABAAQwBhAHQAZQBnAG8AcgB5AAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////w=="/></tab_browse><tab_sql><sql name="Assignment3_Q1.sql">--Question 1
 /*Write the SQL to update the Replacement Cost of all items published between
 2005 and 2010. The new replacement cost = old replacement cost + (0.5% of
 old replacement cost) X (Published Year - 2005) and at the same time update
@@ -59,4 +59,45 @@ ALTER TABLE Category
 ADD MediaID INTEGER
 
 --ALTER TABLE Category
---ADD FOREIGN KEY(`MediaID`) REFERENCES Media(MediaID);</sql><current_tab id="5"/></tab_sql></sqlb_project>
+--ADD FOREIGN KEY(`MediaID`) REFERENCES Media(MediaID);</sql><sql name="Assignment3_Q5.sql">--Question 5
+/*Use a single insert SQL to insert the data shown in the following table into the
+Category table. The insert SQL must include the names of the attributes.*/
+
+INSERT INTO Category
+VALUES (1,'SCI','Science',4),
+	   (2,'MED','Medical',4),
+	   (3,'CLA','Classics',4)
+</sql><sql name="Assignment3_Q6.sql">--Question 6
+/*Use a correlated sub query method to find the customers who had made at least
+one loan. Show the CustomerID and the ‘full name’ (firstname, lastname).(Hint:
+use the customer table, the loan table and the “where exists’ method.)*/
+
+SELECT CustomerID AS &quot;CustomerID&quot;, FirstName||','||LastName AS &quot;Full Name&quot;
+FROM Customer
+WHERE EXISTS (SELECT CustomerID
+			  FROM Loan
+			  WHERE Customer.CustomerID = Loan.CustomerID)
+</sql><sql name="Assignment3_Q7.sql">--Question 7
+/*Update the customer table to create an email for the active member who has
+been a member on and before 2011 and made at least one loan. In the same
+update, change the ‘active’ status to ‘active gold’ for those customers who meet
+the criteria. The email format is firstname.lastname@vuw.ac.nz. (Hint: use the
+“where exists” method.)*/
+
+UPDATE Customer
+SET MemberStatus = 'active gold',
+	Email = FirstName||'.'||LastName||'@vuw.ac.nz'
+WHERE MemberSince &lt;= 2011 AND EXISTS (SELECT CustomerID
+									  FROM Loan
+									  WHERE Customer.CustomerID = Loan.CustomerID)
+	
+</sql><sql name="Assignment3_Q8.sql">--Question 8
+/*Delete the rows in the Loan table which item has been ‘checkedin’ and with a
+‘damaged’ status in the InventoryItem table. (Hint: use the “where exists”
+method.)*/
+
+DELETE FROM Loan
+WHERE EXISTS
+
+(SELECT *
+FROM </sql><current_tab id="9"/></tab_sql></sqlb_project>
