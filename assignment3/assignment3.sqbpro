@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/kylec/Downloads/LibraryDB.sqlite" foreign_keys="1"/><window><current_tab id="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="125"/><column_width id="3" width="2695"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="InventoryItem"/><default_encoding codec=""/><browsetable_info data="AAAABQAAAAgATABvAGEAbgAAAAIAAAAAAAAAAAAAAAAAAAAAAP//////////AAAAAP////8AAAAIAEkAdABlAG0AAAAFAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAD/////AAAAGgBJAG4AdgBlAG4AdABvAHIAeQBJAHQAZQBtAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////wAAABAAQwB1AHMAdABvAG0AZQByAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////wAAABAAQwBhAHQAZQBnAG8AcgB5AAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////w=="/></tab_browse><tab_sql><sql name="Assignment3_Q1.sql">--Question 1
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/kylec/Downloads/LibraryDB.sqlite" foreign_keys="1"/><window><current_tab id="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="125"/><column_width id="3" width="2695"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="Loan"/><default_encoding codec=""/><browsetable_info data="AAAABgAAAAoATQBlAGQAaQBhAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////wAAAAgATABvAGEAbgAAAAMAAAAAAAAAAAAAAAAAAAAAAP//////////AAAAAP////8AAAAIAEkAdABlAG0AAAAIAAAAAQAAAAAAAAAAAAAAAAD//////////wAAAAD/////AAAAGgBJAG4AdgBlAG4AdABvAHIAeQBJAHQAZQBtAAAAAwAAAAEAAAAAAAAAAAAAAAAA//////////8AAAAA/////wAAABAAQwB1AHMAdABvAG0AZQByAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////wAAABAAQwBhAHQAZQBnAG8AcgB5AAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////w=="/></tab_browse><tab_sql><sql name="Assignment3_Q1.sql">--Question 1
 /*Write the SQL to update the Replacement Cost of all items published between
 2005 and 2010. The new replacement cost = old replacement cost + (0.5% of
 old replacement cost) X (Published Year - 2005) and at the same time update
@@ -97,7 +97,14 @@ WHERE MemberSince &lt;= 2011 AND EXISTS (SELECT CustomerID
 method.)*/
 
 DELETE FROM Loan
-WHERE EXISTS
+WHERE CheckedIn IS NOT NULL AND EXISTS (SELECT *	-- checking for if checked in is not null as that mean it is checked it.
+									    FROM InventoryItem
+									    WHERE Loan.InventoryItemID = InventoryItem.InventoryItemID 
+										  	  AND Status = 'Damaged')
 
-(SELECT *
-FROM </sql><current_tab id="9"/></tab_sql></sqlb_project>
+</sql><sql name="Assignment3_Q8_subquery.sql">--Question 8 Sub query
+-- This does not include the check for the loan ID as
+-- Loan table is not used in sub query
+SELECT *
+FROM InventoryItem
+WHERE Status = 'Damaged'</sql><current_tab id="10"/></tab_sql></sqlb_project>

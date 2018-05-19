@@ -4,7 +4,8 @@
 method.)*/
 
 DELETE FROM Loan
-WHERE EXISTS
+WHERE CheckedIn IS NOT NULL AND EXISTS (SELECT *	-- checking for if checked in is not null as that mean it is checked it.
+									    FROM InventoryItem
+									    WHERE Loan.InventoryItemID = InventoryItem.InventoryItemID 
+										  	  AND Status = 'Damaged')
 
-(SELECT *
-FROM 
