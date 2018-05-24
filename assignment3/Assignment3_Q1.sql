@@ -5,7 +5,7 @@ old replacement cost) X (Published Year - 2005) and at the same time update
 the LostFee. The LostFee is the new ReplacementCost plus a re-stocking fee of
 $10. (Note: use only one update statement.)*/
 
-UPDATE Item
-SET ReplacementCost = ROUND(ReplacementCost + (ReplacementCost * 0.05) * (PubYear - 2005),2),
-	LostFee = ROUND(ReplacementCost + (ReplacementCost * 0.05) * (PubYear - 2005),2) + 10
+UPDATE Item		-- 0.005 as that is 0.5%
+SET ReplacementCost = ROUND(ReplacementCost + (ReplacementCost * 0.005) * (PubYear - 2005),2),
+	LostFee = ROUND(ReplacementCost + (ReplacementCost * 0.005) * (PubYear - 2005),2) + 10
 WHERE PubYear BETWEEN 2005 AND 2010

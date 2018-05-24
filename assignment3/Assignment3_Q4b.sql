@@ -5,5 +5,5 @@ Write the alter SQL to add MediaID in the table. Use the Integer data type
 for the MediaID attribute.*/
 
 ALTER TABLE Category
-ADD COLUMN MediaID REFERENCES Media(MediaID);
+ADD COLUMN MediaID INTEGER REFERENCES Media(MediaID);
 -- I tried using ADD FOREIGN KEY but you can't as Media ID was not created yet.
